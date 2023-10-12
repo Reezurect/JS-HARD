@@ -1,19 +1,34 @@
 "use strict";
 
-const foo = (arg) => {
-    let res = 'Ожидается появление строки...';
-    if (typeof arg === "string") {
-        const maxLength = 30;
-        const str = arg.trim();
-        if (str.length > maxLength) {
-            res = str.substr(0, maxLength) + '...';
-        } else {
-            res = str;
-        }
-    }
-    return res;
+const arr = ['3458', '456623', '9462953', '284673', '695863', '28758', '986453'];
+
+for (let i = 0; i < arr.length; i++) {
+    if (arr[i].startsWith('2') || arr[i].startsWith('4')) {
+        console.log(arr[i]);
+    };
 };
 
-console.log('foo(): ', foo(5));
-console.log('foo(): ', foo('    Строка менее 30 символов     '));
-console.log('foo(): ', foo('    Строка более 30 символов -  очень длинная строчка'));
+const dividers = el => {
+    let arr = [];
+    if (el !== 1) {
+        arr.push(1);
+        for (let j = 2; j * j <= el; j++) {
+            if (el % j === 0) {
+                arr.push(j);
+            };
+        };
+    };
+    arr.push(el);
+    return arr;
+};
+
+for (let i = 1; i <= 100; i++) {
+    const n = dividers(i);
+    if (n.length <= 2) {
+        console.log(`${i}: Простое число. Делители этого числа: ${n.join(', ')}`);
+    };
+};
+
+for (let i = 1; i <= 100; i++) {
+    console.log(`${i}: Делители этого числа: ${dividers(i).join(', ')}`);
+};
