@@ -1,18 +1,49 @@
 "use strict";
 
-const week = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+const timeDisplay = () => {
+    const week = ['Воскресенье, ', 'Понедельник, ', 'Вторник, ', 'Среда, ',
+        'Четверг, ', 'Пятница, ', 'Суббота, '];
+    const month = [' января ', ' февраля ', ' марта ',
+        ' апреля ', ' мая ', ' июня ',
+        ' июля ', ' августа ', ' сентября ',
+        ' октября ', ' ноября ', ' декабря '];
+    const date = new Date();
 
-const day = new Date();
-let numWeekDay = day.getDay();
-if (numWeekDay === 0) { numWeekDay = 6; } else { numWeekDay--; }
+    const addZero = elem => {
+        if (String(elem).length === 1) { return '0' + elem; } else { return String(elem); }
+    };
+    const changeEnding = (num, timeElem = '') => {
+        const textVariant = (timeElem === 'h' ? [' час ', ' часа ', ' часов '] :
+            timeElem === 'm' ? [' минута ', ' минуты ', ' минут '] :
+                [' секунда ', ' секунды ', ' секунд ']);
+        const n = num % 10;
+        return num > 4 && num < 20 ? num + textVariant[2] :
+            n === 1 ? num + textVariant[0] :
+                n > 1 && n < 5 ? num + textVariant[1] :
+                    num + textVariant[2];
+    };
 
-week.forEach((day, i) => {
-    let str = day;
-    if (i === numWeekDay) {
-        str = `<b>${day}</b>`;
-    } else {
-        str = `${day}`;
-    }
-    if (i === 5 || i === 6) { str = `<i>${str}</i>`; }
-    document.body.insertAdjacentHTML('beforeend', `<div>${str}</div>`);
-});
+    const textTime = 'Сегодня ' + week[date.getDay()] + date.getDay() + month[date.getMonth()] +
+        date.getFullYear() + ' года, ' + changeEnding(date.getHours(), 'h') +
+        changeEnding(date.getMinutes(), 'm') + changeEnding(date.getSeconds());
+    const time = addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds()) + ' ' +
+        addZero(date.getDay()) + '.' + addZero(date.getMonth()) + '.' + date.getFullYear();
+
+    document.querySelector('.text-time').textContent = textTime;
+    document.querySelector('.time').textContent = time;
+
+    console.clear();
+    console.log(textTime);
+    console.log(time);
+};
+
+let elem = document.createElement('div');
+elem.classList.add('text-time');
+document.body.appendChild(elem);
+
+elem = document.createElement('div');
+elem.classList.add('time');
+document.body.appendChild(elem);
+console.dir(elem);
+
+setInterval(timeDisplay, 1000);
